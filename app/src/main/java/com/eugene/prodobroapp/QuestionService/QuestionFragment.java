@@ -1,4 +1,4 @@
-package com.eugene.prodobroapp;
+package com.eugene.prodobroapp.QuestionService;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.eugene.prodobroapp.R;
 
 /**
  * Created by eugene on 29.09.18.

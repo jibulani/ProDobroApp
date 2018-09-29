@@ -1,4 +1,4 @@
-package com.eugene.prodobroapp;
+package com.eugene.prodobroapp.CatalogueService;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,17 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.eugene.prodobroapp.R;
+
 /**
  * Created by eugene on 29.09.18.
  */
 
-public class SendMessageFragment extends Fragment {
+public class CatalogueFragment extends Fragment {
 
-    public static QuestionFragment newInstance() {
+    public static CatalogueFragment newInstance() {
 
         Bundle args = new Bundle();
 
-        QuestionFragment fragment = new QuestionFragment();
+        CatalogueFragment fragment = new CatalogueFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -25,6 +27,6 @@ public class SendMessageFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.send_message_layout, container, false);
+        return inflater.inflate(R.layout.catalogue_layout, container, false);
     }
 }
