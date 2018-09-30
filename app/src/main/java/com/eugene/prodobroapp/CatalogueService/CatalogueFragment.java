@@ -3,8 +3,8 @@ package com.eugene.prodobroapp.CatalogueService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import android.app.Activity;
-import android.content.Context;
+
+import android.app.Dialog;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,14 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.ExpandableListView.OnGroupCollapseListener;
-import android.widget.ExpandableListView.OnGroupExpandListener;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.eugene.prodobroapp.App;
+import com.eugene.prodobroapp.MainActivity;
 import com.eugene.prodobroapp.R;
-import com.eugene.prodobroapp.data.source.local.AppDatabase;
 
 /**
  * Формирование на экране списка информационных материалов
@@ -30,13 +26,13 @@ import com.eugene.prodobroapp.data.source.local.AppDatabase;
 public class CatalogueFragment extends Fragment {
 
     private static final String CLASS_TAG = "CatalogueFragment";
-    private static final AppDatabase appDatabase = App.getInstance().getAppDatabase();
-
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    Dialog frmDialog;// форма диалогового окна для визуализации информации по выбранному пункту из каталога
+    TextView text;// текст, содержащийся в пункте меню, который будет визаулизирован при нажатии на пункт в каталоге
 
     /**
      * данный метод создаёт экземпляр фрагмента,
@@ -56,6 +52,8 @@ public class CatalogueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.catalogue_layout, container, false);
+
+        frmDialog = new Dialog(getActivity());
 
         expListView = view.findViewById(R.id.lvExp);// get Expandable ListView
 
@@ -114,6 +112,49 @@ public class CatalogueFragment extends Fragment {
         // setting list adapter
         expListView.setAdapter(listAdapter);
 
+        // Listview on child click listener
+        expListView.setOnChildClickListener(new OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                showItemContent(listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition));
+                return false;
+            }
+        });
+
         return view;
+    }
+
+    // выводит диалоговое окно с информацией, содержащийся в выбранном пункте каталога
+    private void showItemContent(String item){
+        String content = "";
+
+        switch (item){
+            case "План спасения":
+                content = "1) держи под рукой: свидетельство о рождении, банковскую карту, ключи, мобильный телефон.\n" +
+                        "2) сообщи людям, которые могут тебя поддержать, что происходит, и держи под рукой их контакты.\n" +
+                        "3) чувства испуга, злости, смущения, стыда, грусти нормальны в данной ситуации. Постарайся проговорить/проиграть то, что ты чувствуешь.\n" +
+                        "4) насилие – не твоя вина, оно противозаконно, но с другими тоже это происходит\n" +
+                        "5) найди надежного взрослого, чтобы с ним поговорить (родственник, друг или школьный психолог, детский телефон доверия). Обратись в центр помощи.";
+                break;
+            case "Депрессия":
+                content = "1) ВСЕГДА есть другое решение, даже если вы его не видите прямо сейчас.\n" +
+                        "2) наличие мыслей причинить вред себе или другим не делает вас плохим человеком.\n" +
+                        "3) если ваши чувства неконтролируемы, скажите себе подождать 24 часа перед тем, как предпринять что-либо.\n" +
+                        "4) если вы боитесь, что вы не сможете контролировать себя, убедитесь, что вы никогда не остаетесь в одиночестве\n" +
+                        "5) Попробуйте заснуть.";
+                break;
+        }
+
+        // Установите заголовок
+        frmDialog.setTitle(item);
+        // Передайте ссылку на разметку
+        frmDialog.setContentView(R.layout.catalogue_item_layout);
+        // Найдите элемент TextView внутри вашей разметки
+        // и установите ему соответствующий текст
+        text = frmDialog.findViewById(R.id.catalogue_item_text);
+        text.setText(content);
+        // Выводим диалоговое окно на экран
+        frmDialog.show();
     }
 }
