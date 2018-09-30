@@ -122,7 +122,7 @@ public class QuestionFragment extends Fragment {
                                     });
                                     linearLayout.addView(button);
                                 }
-                            });
+                            }, e -> System.out.println(e));
                 });
     }
 
